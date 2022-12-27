@@ -1,0 +1,70 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Archie{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1>Achie 🔥</h1>
+		<p class="lead">Services , activities.</p>
+		<h3>
+			<a href="/venues"><button class="btn btn-primary btn-lg">Find a service &nbsp; </button></a>
+			<a href="/venues/create"><button class="btn btn-default btn-lg">Post a&nbsp;  Service </button></a>
+		</h3>
+		<h3>
+			<a href="/artists"><button class="btn btn-primary btn-lg">Find an activity</button></a>
+			<a href="/artists/create"><button class="btn btn-default btn-lg">Post an Activity</button></a>
+		</h3>
+		<p class="lead">Manage Files.</p>
+		<h3>
+			<a href="/shows/create"><button class="btn btn-default btn-lg">Download a file</button></a>
+			<a href="/shows/create"><button class="btn btn-default btn-lg"> &nbsp; Upload  a file &nbsp; </button></a>
+		</h3>
+	</div>
+	<div class="col-sm-6 hidden-sm hidden-xs">
+		<img id="front-splash" src="{{ url_for('static',filename='img/centrale.jpg') }}" alt="Front Photo of Arche" />
+	</div>
+</div>
+
+
+<div class="row">
+
+	<div class="col-sm-6"> 
+		<p class="lead">Recently Listed Services </p> 
+		<ul class="items">
+			{% for artist in artists %}
+				<li>
+					<a href="/artists/{{artist.id}}">
+						<i class="fas fa-users"></i>
+						<div class="item">
+							<h5>{{ artist.name }}</h5>
+						</div>
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div class="col-sm-6">  
+		<p class="lead">Recently Listed Activities </p> 
+		<ul class="items">
+			{% for venue in venues %}
+				<li>
+					<a href="/venues/{{venue.id}}">
+						<i class="fas fa-music"></i>
+						<div class="item">
+							<h5>{{ venue.name }}</h5>
+						</div>
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div> 
+</div> 
+
+
+
+
+
+
+
+
+{% endblock %}

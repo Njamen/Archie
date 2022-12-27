@@ -1,0 +1,19 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyurwerty | Venues{% endblock %}
+{% block content %}
+{% for service in areas %}
+<h3>{{ service.name}}</h3>
+	<ul class="items">
+		{% for activity in service.activities %}
+		<li>
+			<a href="/activity/{{ service.id }}">
+				<i class="fas fa-music"></i>
+				<div class="item">
+					<h5>{{ activity.name }}</h5>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+{% endfor %}
+{% endblock %}
