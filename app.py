@@ -1,3 +1,4 @@
+
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
@@ -97,12 +98,202 @@ def index():
 #  Venues
 #  ----------------------------------------------------------------
 
+@app.route('/fichier/create', methods=['GET'])
+def create_fichier_form():
+    form = FichierForm()
+    return render_template('forms/new_fichier.html', form=form)
+
+
+@app.route('/fichier/create', methods=['POST'])
+def create_fichier_submission():
+    # called to create new shows in the db, upon submitting new show listing form
+    # TODO: insert form data as a new Show record in the db, instead
+
+    form = FichierForm(request.form)
+    try:
+        show = Fichier(
+            name=form.name.data,
+            acivite_id=form.activity_id.data,
+            url=form.url.data,
+        )
+
+        db.session.add(show)
+        db.session.commit()
+        flash('File  was successfully upload!')
+        db.session.close()
+        # return render_template('pages/shows.html')
+        return redirect(url_for('shows'))
+
+    except Exception as e:
+        db.session.rollback()
+        error = True
+        print(e)
+        flash('An error occurred. show could not be listed.')
+        form = FichierForm()
+        db.session.close()
+        return render_template('forms/new_show.html', form=form)
+
+
+@app.route('/activity/create', methods=['GET'])
+def create_activity_form():
+    form = ActivityForm()
+    return render_template('forms/new_activity.html', form=form)
+
+@app.route('/activity/create', methods=['POST'])
+def create_activity_submission():
+
+
+    form = ActivityForm(request.form)
+    try:
+
+        print("name {form.name.data}")
+        activite = Activite(
+            name=form.name.data,
+            service_id= form.service_id.data,
+        )
+
+        db.session.add(activite)
+        db.session.commit()
+        flash('Activity  was successfully listed!')
+        db.session.close()
+        # return render_template('pages/shows.html')
+        return redirect(url_for('activities'))
+
+    except Exception as e:
+        db.session.rollback()
+        error = True
+        flash('An error occurred. Activity could not be listed.')
+        form = ActivityForm()
+        db.session.close()
+        return render_template('forms/new_activity.html', form=form)
+
+
+@app.route('/service/create', methods=['GET'])
+def create_service_form():
+    form = ServiceForm()
+    return render_template('forms/new_service.html', form=form)
+
+@app.route('/service/create', methods=['POST'])
+def create_service_submission():
+
+    form = ServiceForm(request.form)
+
+    try:
+        service = Service(
+            name=form.name.data, 
+        )
+
+        db.session.add(service)
+        db.session.commit()
+        flash('Service ' + request.form['name'] + ' was successfully listed!')
+        return render_template('pages/home.html')
+
+    except Exception as e:
+        db.session.rollback()
+        error = True
+        print(e)
+        flash('An error occurred. Venue ' +
+              request.form['name'] + ' could not be listed.')
+        form = VenueForm()
+        return render_template('forms/new_service.html', form=form)
+    finally:
+        db.session.close()
+
+
+@app.route('/services/search', methods=['POST'])
+def search_services():
+
+
+    search_term = request.form.get('search_term', "")
+    pattern = "%{}%".format(search_term)
+    found_items = Service.query.filter(Service.name.ilike(pattern)).all() 
+
+    data = []
+    for service in found_items:
+        data.append({
+            "id": service.id,
+            "name": service.name,
+            "activities": [{
+                "id": activity.id,
+                "name": activity.name,
+            } for activity  in service.activities ]
+        })
+
+    return render_template('pages/services.html', areas=data)
+
+
+@app.route('/activities/search', methods=['POST'])
+def search_activities():
+
+
+    search_term = request.form.get('search_term', "")
+    pattern = "%{}%".format(search_term)
+    found_items = Activite.query.filter(Activite.name.ilike(pattern)).all()
+
+
+    data = []
+    for activity in found_items:
+        data.append({
+            "id": activity.id,
+            "name": activity.name,
+            "service": {
+                "id": activity.service.id,
+                "name": activity.service.name,
+            }
+        })
+    return render_template('pages/activities.html', areas=data)
+
+
+
+@app.route('/service/<int:service_id>/activity/<int:activity_id>/fichiers')
+def fichers(service_id, activity_id):
+
+    service = Service.query.get_or_404(service_id)
+    activite = Activite.query.get_or_404(activity_id) 
+    fichiers = [it for it in Fichier.query.all() if it.acivite_id == activity_id ]
+
+    data = {
+        "id_service" : service.id,
+        "name_service" : service.name,
+        "id_activite" : activite.id,
+        "nom_activite" : activite.name,
+        "fichiers" : [{
+            "id" : fich.id,
+            "name" :fich.name,
+            "url" : fich.url 
+        } for fich in fichiers]
+    } 
+
+    return render_template('pages/fichiers.html', areas=data)
+
+
+
+@app.route('/activities')
+def activities():
+
+    all_service = Activite.query.all() 
+
+    data = []
+    for activity in all_service:
+        data.append({
+            "id": activity.id,
+            "name": activity.name,
+            "service": {
+                "id": activity.service.id,
+                "name": activity.service.name,
+            }
+        })
+
+
+    return render_template('pages/activities.html', areas=data)
+
+
+
+
 @app.route('/services')
 def services():
 
     all_service = Service.query.all() 
-
-    print("ssss")
 
     data = []
     for service in all_service:

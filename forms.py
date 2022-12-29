@@ -22,18 +22,7 @@ def is_valid_phone(number):
     regex = re.compile('^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$')
     return regex.match(number)
 
-class ShowForm(Form):
-    artist_id = StringField(
-        'artist_id'
-    )
-    venue_id = StringField(
-        'venue_id'
-    )
-    start_time = DateTimeField(
-        'start_time',
-        validators=[DataRequired()],
-        default= datetime.today()
-    )
+
 
 class VenueForm(Form):
     name = StringField(
@@ -143,3 +132,44 @@ class ArtistForm(Form):
             return False
         return True 
 
+# class ShowForm(Form):
+#     artist_id = StringField(
+#         'artist_id'
+#     )
+#     venue_id = StringField(
+#         'venue_id'
+#     )
+#     start_time = DateTimeField(
+#         'start_time',
+#         validators=[DataRequired()],
+#         default= datetime.today()
+#     )
+
+class ActivityForm(Form):
+    service_id = StringField(
+        'service_id',  validators=[DataRequired()]
+    )
+    name = StringField(
+        'name', validators=[DataRequired()]
+    )
+
+
+class ServiceForm(Form):
+    name = StringField(
+        'name', validators=[DataRequired()]
+    )
+
+
+class FichierForm(Form):
+    name = StringField(
+        'name', validators=[DataRequired()]
+    ) 
+
+    url =   StringField(
+        'url', validators=[DataRequired()]
+    ) 
+
+    activity_id = StringField(
+        'service_id',  validators=[DataRequired()]
+    )
+      
