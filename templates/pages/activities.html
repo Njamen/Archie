@@ -6,9 +6,9 @@
         {% for activity in areas %} 
             <li>
                 <a href="/service/{{activity.service.id}}/activity/{{activity.id}}/fichiers">
-                    <i class="fas fa-music"></i>
+                    <i class="fa fa-bolt"></i>
                     <div class="item">
-                        <h5>{{activity.name }} from {{activity.service.name}}</h5>
+                        <h5>{{activity.name }}, id : {{activity.id}} </h5>
                     </div>
                 </a>
             </li>

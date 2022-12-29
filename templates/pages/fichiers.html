@@ -1,16 +1,15 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Archie | Activity{% endblock %}
 {% block content %}
-<h4> Service : {{areas.name_service}} </h4>
-<h4> Activity : {{areas.nom_activite}} </h4>
+<h3> Files : {{areas.name_service}}  ,  {{areas.nom_activite}}  </h3>
 <ul class="items">
     {% for fichier in areas.fichiers %}
         <li>
             <a href="{{fichier.url}}">
-                <i class="fas fa-music"></i>
-                <div class="item">
-                    <h5>{{ fichier.name }}</h5>
-                </div>
+				<i class="fa fa-bolt"></i>
+				<div class="item">
+					<h5> {{ fichier.name }}</h5>
+				</div>
             </a>
         </li>
     {% endfor %}
