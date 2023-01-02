@@ -3,7 +3,6 @@ from flask_moment import Moment
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-import pymysql
 
 SECRET_KEY = os.urandom(32)
 # Grabs the folder where the script runs.
