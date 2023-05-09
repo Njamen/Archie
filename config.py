@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Integer
 import json
 from flask import Flask
-import pymysql
 
 SECRET_KEY = os.urandom(32)
 # Grabs the folder where the script runs.
