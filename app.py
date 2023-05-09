@@ -22,14 +22,15 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
-from config import app
+from config import app, db
 from flask_migrate import Migrate
 from flask import jsonify
 from datetime import (
     datetime,
     timezone
 )
-from models import db, Venue, Artist, Show
+# from models import db, Venue, Artist, Show
+# from config import db
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -44,7 +45,7 @@ from models import db, Venue, Artist, Show
 
 # TODO: connect to a local postgresql database
 
-from models import *
+# from models import *
 
 
 # db.create_all()
@@ -121,10 +122,15 @@ def create_fichier_submission():
 
     form = FichierForm(request.form)
     try:
+
+        print("ALPHA BETA LAMBDA")
+        # raw_data = request.FILES[form.image.name].read()
+        # print(form.file.data)
         show = Fichier(
-            name=form.name.data,
+            name=form.file.data,
             acivite_id=form.activity_id.data,
-            url=form.url.data,
+            url=""
+            # url=form.url.data,
         )
 
         db.session.add(show)

@@ -7,7 +7,8 @@ from wtforms import (
     SelectField, 
     SelectMultipleField, 
     DateTimeField, 
-    BooleanField
+    BooleanField,
+    FileField
 )
 from wtforms.validators import (
     DataRequired, 
@@ -165,9 +166,11 @@ class FichierForm(Form):
         'name', validators=[DataRequired()]
     ) 
 
-    url =   StringField(
-        'url', validators=[DataRequired()]
-    ) 
+    # url =   StringField(
+    #     'url', validators=[DataRequired()]
+    # ) 
+
+    file = FileField('select File')
 
     activity_id = StringField(
         'service_id',  validators=[DataRequired()]
